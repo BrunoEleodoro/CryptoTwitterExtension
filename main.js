@@ -10,22 +10,24 @@ document.body.onload = async function () {
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: () => {
+    func: async () => {
       // document.body.style.background = "linear-gradient(0deg, rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url('https://media.tenor.com/IvyuPtEfzhoAAAAM/matrix.gif')";
       // Injecting HTML
 
       // document.querySelectorAll('[data-testid="placementTracking"]')[0].parentElement.innerHTML= ``;
       // document.querySelector('body').appendChild(document.createElement('div')).innerHTML = ``;
-      
       const name = document.querySelectorAll('[data-testid="UserName"]')[0].children[0].children[0].children[0].innerText;
       const img = document.querySelectorAll('[data-testid*="primaryColumn"]')[0].querySelectorAll('[data-testid*="UserAvatar-Container"]')[0].querySelectorAll('img')[0].src;
       const randomID= Math.random().toString(36).substring(7);
+      const handle = document.querySelectorAll('[data-testid="UserName"]')[0].children[0].children[0].children[1].innerText.replace('@', '');
+      const receiverAddress = await fetch('https://worker-super-haze-dfe9.brunoeleodoro-helloworld.workers.dev/?account='+handle).then(res => res.json()).then(res => res.res);
+
       const modalHTML = `<section class="modal hidden" id=${randomID}>
       <div class="flex">
         <button class="btn-close" >x</button>
       </div>
       <div>
-      <iframe src="https://cryptotwitter.surge.sh/?name=${name}&description=dfafsafdsa&imageURI=${img}"
+      <iframe src="https://crypto-twitter-ecc23.web.app/?name=${name}&description=payment&imageURI=${img}&receiverAddress=${receiverAddress}"
             name="thumbnails"
             frameborder="0"
             style="width: 100%;

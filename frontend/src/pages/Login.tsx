@@ -1,21 +1,18 @@
-import { TwitterAuthProvider, User } from "firebase/auth";
-import { getAuth, signInWithPopup } from "firebase/auth";
-import { useState } from "react";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction, useAccount } from "wagmi";
-
-
+import { TwitterAuthProvider, User, getAuth, signInWithPopup } from "firebase/auth";
+import { useState } from "react";
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 
 export const LoginPage = () => {
     const [user, setUser] = useState<User>();
     const [receiverAddress, setReceiverAddress] = useState<string>("");
 
     // WAGMI
-    const contractAddress = "0x61B482C29FCa80bA1749EC60fb38bE45bB4a812c";
+    const contractAddress = "0xcc62E6AcA6c73d739AFEF260BEF10Ed8FdC7641A";
     const { config } = usePrepareContractWrite({
         address: contractAddress,
         args: [receiverAddress],
-        abi: [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getTwitterHandle","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_twitterHandle","type":"string"}],"name":"setTwitterHandle","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"twitterHandles","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}],
+        abi: [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[{"internalType":"string","name":"_twitterHandle","type":"string"}],"name":"getAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"}],"name":"getTwitterHandle","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_twitterHandle","type":"string"}],"name":"setTwitterHandle","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"twitterHandles","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"twitterHandlesReverse","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}],
         functionName: 'setTwitterHandle',
     })
     const { data, write } = useContractWrite(config)
@@ -23,7 +20,6 @@ export const LoginPage = () => {
     const { isLoading, isSuccess } = useWaitForTransaction({
         hash: data?.hash,
     })
-    const myAccount = useAccount();
     
     async function authWithTwitter() {
         const provider = new TwitterAuthProvider();

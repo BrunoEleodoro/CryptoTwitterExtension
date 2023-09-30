@@ -17,15 +17,17 @@ export default function App() {
   var url = new URL(window.location.href);
   console.log({urlParams}, queryString, url);
 
-  const data = urlParams.get('name') && urlParams.get('description') && urlParams.get('imageURI') ? {
+  const data = urlParams.get('name')&& urlParams.get('receiverAddress') && urlParams.get('description') && urlParams.get('imageURI') ? {
     name: urlParams.get('name'),
     description: urlParams.get('description'),
     imageURI: urlParams.get('imageURI'),
+    receiverAddress: urlParams.get('receiverAddress')
   } : {
     name: "Superfluid Funscription",
     description:
       "Superfluid Funscription is a subscription-based service for continuous & perpetual fun.",
-      imageURI: "https://pbs.twimg.com/profile_images/1683249222534025216/-AksKsna_400x400.jpg",
+      imageURI: "https://pbs.twimg.com/profile_images/1670614648863727617/JLHVnDUO_400x400.jpg",
+      receiverAddress: '0xdd6d37e29294a985e49ff301acc80877fc24997f'
   };
   // const data = {
   //   // name: "Superfluid Funscription",
