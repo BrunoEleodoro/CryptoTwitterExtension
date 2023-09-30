@@ -1,33 +1,16 @@
-import "./App.css";
 import '@rainbow-me/rainbowkit/styles.css';
+import "./App.css";
 
-import { ConnectButton, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import SuperfluidWidget, {
-  EventListeners,
-  PaymentOption,
-} from "@superfluid-finance/widget";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import SuperfluidWidget from "@superfluid-finance/widget";
 import superTokenList from "@superfluid-finance/widget/tokenlist";
-import { useCallback, useMemo, useState } from "react";
-import { WagmiConfig } from "wagmi";
 
-import paymentDetails from "./paymentDetails";
 import { ProductDetails } from "@superfluid-finance/widget";
-import { chains, wagmiConfig } from "./wagmi";
+import paymentDetails from "./paymentDetails";
 
 export default function App() {
-  const [initialChainId, setInitialChainId] = useState<number | undefined>();
-  const onPaymentOptionUpdate = useCallback<
-    Required<EventListeners>["onPaymentOptionUpdate"]
-  >(
-    (paymentOption?: PaymentOption) =>
-      setInitialChainId(paymentOption?.chainId),
-    [setInitialChainId],
-  );
-  const eventListeners = useMemo<EventListeners>(
-    () => ({ onPaymentOptionUpdate }),
-    [onPaymentOptionUpdate],
-  );
-  
+
+
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   
@@ -56,8 +39,7 @@ export default function App() {
 
   return (
     <>
-      <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains} initialChain={initialChainId}>
+        
           <ConnectButton.Custom>
             {({ openConnectModal, connectModalOpen }) => {
               const walletManager = {
@@ -72,7 +54,6 @@ export default function App() {
                     tokenList={superTokenList}
                     type="dialog"
                     walletManager={walletManager}
-                    eventListeners={eventListeners}
                   >
                     {({ openModal , }) => {
                       setTimeout(() => {
@@ -88,8 +69,6 @@ export default function App() {
               );
             }}
           </ConnectButton.Custom>
-        </RainbowKitProvider>
-      </WagmiConfig>
     </>
   );
 }

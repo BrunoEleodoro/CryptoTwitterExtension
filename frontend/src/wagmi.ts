@@ -11,7 +11,7 @@ export const { chains, publicClient, webSocketPublicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "My wagmi + RainbowKit App",
+  appName: "CryptoTwitterExtension",
   chains,
   projectId: walletConnectProjectId,
 });

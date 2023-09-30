@@ -1,11 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {
+  RouterProvider,
+  createBrowserRouter
+} from "react-router-dom";
+import App from './App.tsx';
+import './index.css';
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "firebase/app";
+import LoginPage from './pages/Login.tsx';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,10 +28,29 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+getAnalytics(app);
+import { chains,wagmiConfig } from "./wagmi";
+import { WagmiConfig } from 'wagmi';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App/>,
+  },
+  {
+    path: "/login",
+    element: <LoginPage/>,
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <WagmiConfig config={wagmiConfig}>
+    <RainbowKitProvider chains={chains} initialChain={8453}>
+      <RouterProvider router={router} />
+      </RainbowKitProvider>
+      </WagmiConfig>
+      
   </React.StrictMode>,
 )
